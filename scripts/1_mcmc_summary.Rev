@@ -1,0 +1,646 @@
+################################################################################
+#
+# RevBayes Script: Summarizing the MCMC
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+TREE_TYPE     = "non-clock"
+MIN_SEQ_DATA  = 0.25
+
+# read in the character data
+data <- readDiscreteCharacterData( DATA_DIR + "/" + GENE_NAME + ".nex" )
+
+##################
+## Psilocladus  ##
+##################
+
+tmp_taxa_Psilocladus = v("Psilocladus_sigillatus", "Psilocladus_sp_1", "Psilocladus_sp_2")
+index = 0
+for ( t in tmp_taxa_Psilocladus ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Psilocladus[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Psilocladus") ) {
+    clade_Psilocladus = clade(taxa_Psilocladus)
+}
+
+
+############
+## Vesta  ##
+############
+
+tmp_taxa_Vesta = v("Vesta_impressicollis", "Vesta_saturnalis", "Vesta_sp")
+index = 0
+for ( t in tmp_taxa_Vesta ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Vesta[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Vesta") ) {
+    clade_Vesta = clade(taxa_Vesta)
+}
+
+
+#################
+## Amydetinae  ##
+#################
+
+tmp_taxa_Amydetinae = v("Amydetes_fastigiata", "Cladodes_illigeri", "Ethra_axillaris", "Memoan_ciceroi", "Psilocladus_sigillatus", "Psilocladus_sp_1", "Psilocladus_sp_2", "Vesta_impressicollis", "Vesta_saturnalis", "Vesta_sp")
+index = 0
+for ( t in tmp_taxa_Amydetinae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Amydetinae[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Amydetinae") ) {
+    clade_Amydetinae = clade(taxa_Amydetinae)
+}
+
+
+####################
+## Lamprohizinae  ##
+####################
+
+tmp_taxa_Lamprohizinae = v("Lamprohiza_splendidula", "Phausis_reticulata")
+index = 0
+for ( t in tmp_taxa_Lamprohizinae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Lamprohizinae[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Lamprohizinae") ) {
+    clade_Lamprohizinae = clade(taxa_Lamprohizinae)
+}
+
+
+###############
+## Aspisoma  ##
+###############
+
+tmp_taxa_Aspisoma = v("Aspisoma_sp", "Aspisoma_sticticum")
+index = 0
+for ( t in tmp_taxa_Aspisoma ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Aspisoma[++index] = t
+	}
+}
+
+if ( index > 1 && exists("taxa_Aspisoma") ) {
+    clade_Aspisoma = clade(taxa_Aspisoma)
+}
+
+
+
+##################
+## Pyractomena  ##
+##################
+
+tmp_taxa_Pyractomena = v("Pyractomena_borealis", "Pyractonema_sp_1", "Pyractonema_sp_2")
+index = 0
+for ( t in tmp_taxa_Pyractomena ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Pyractomena[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Pyractomena") ) {
+    clade_Pyractomena = clade(taxa_Pyractomena)
+}
+
+
+####################
+## Cratomorphini  ##
+####################
+
+tmp_taxa_Cratomorphini = v("Aspisoma_sp", "Aspisoma_sticticum", "Cratomorphus_sp", "Pyractomena_borealis", "Pyractonema_sp_1", "Pyractonema_sp_2")
+index = 0
+for ( t in tmp_taxa_Cratomorphini ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Cratomorphini[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Cratomorphini") ) {
+    clade_Cratomorphini = clade(taxa_Cratomorphini)
+}
+
+
+#################
+## Lamprocera  ##
+#################
+
+tmp_taxa_Lamprocera = v("Lamprocera_sp_1", "Lamprocera_sp_2", "Lamprocera_sp_3", "Lamprocera_sp_4")
+index = 0
+for ( t in tmp_taxa_Lamprocera ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Lamprocera[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Lamprocera") ) {
+    clade_Lamprocera = clade(taxa_Lamprocera)
+}
+
+
+###################
+## Lamprocerini  ##
+###################
+
+tmp_taxa_Lamprocerini = v("Lamprocera_sp_1", "Lamprocera_sp_2", "Lamprocera_sp_3", "Lamprocera_sp_4", "Lucio_blattinum", "Lychnacris_sp", "Tenaspis_angularis")
+index = 0
+for ( t in tmp_taxa_Lamprocerini ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Lamprocerini[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Lamprocerini") ) {
+    clade_Lamprocerini = clade(taxa_Lamprocerini)
+}
+
+################
+## Diaphanes  ##
+################
+
+tmp_taxa_Diaphanes = v("Diaphanes_pectinealis", "Diaphanes_sp_1", "Diaphanes_sp_2", "Diaphanes_sp_3", "Diaphanes_sp_4")
+index = 0
+for ( t in tmp_taxa_Diaphanes ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Diaphanes[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Diaphanes") ) {
+    clade_Diaphanes = clade(taxa_Diaphanes)
+}
+
+
+################
+## Lampyrini  ##
+################
+
+tmp_taxa_Lampyrini = v("Diaphanes_pectinealis", "Diaphanes_sp_1", "Diaphanes_sp_2", "Diaphanes_sp_3", "Diaphanes_sp_4", "Lampyris_noctiluca", "Microphotus_sp", "Petalacmis_sp", "Pleotomodes_needhami", "Pyrocoelia_pygidialis")
+index = 0
+for ( t in tmp_taxa_Lampyrini ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Lampyrini[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Lampyrini") ) {
+    clade_Lampyrini = clade(taxa_Lampyrini)
+}
+
+
+################
+## Ellychnia  ##
+################
+
+tmp_taxa_Ellychnia = v("Ellychnia_corrusca", "Ellychnia_sp")
+index = 0
+for ( t in tmp_taxa_Ellychnia ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Ellychnia[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Ellychnia") ) {
+    clade_Ellychnia = clade(taxa_Ellychnia)
+}
+
+
+###############
+## Photinus  ##
+###############
+
+tmp_taxa_photinus = v("Photinus_sp_1", "Photinus_sp_2", "Photinus_floridanus", "Photinus_macdermotti_1", "Photinus_stellaris", "Photinus_ardens", "Photinus_carolinus", "Photinus_pyralis", "Ellychnia_sp", "Ellychnia_corrusca", "Photinus_macdermotti_2", "Photinus_granulatus", "Photinus_australis", "Photinus_brimleyi")
+
+index = 0
+for ( t in tmp_taxa_photinus ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_photinus[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_photinus") ) {
+    clade_Photinus = clade(taxa_photinus)
+}
+
+
+###############
+## Pyropyga  ##
+###############
+
+tmp_taxa_Pyropyga = v("Pyropyga_decipiens", "Pyropyga_nigricans")
+
+index = 0
+for ( t in tmp_taxa_Pyropyga ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Pyropyga[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Pyropyga") ) {
+    clade_Pyropyga = clade(taxa_Pyropyga)
+}
+
+
+################
+## Photinini  ##
+################
+
+tmp_taxa_Photinini = v("Photinini_sp_", "Ellychnia_corrusca", "Ellychnia_sp", "Heterophotinus_sp", "Lamprigera_yunnana", "Photinus_sp_1", "Photinus_sp_2", "Photinus_floridanus", "Photinus_macdermotti_2", "Photinus_stellaris", "Photinus_ardens", "Photinus_carolinus", "Photinus_pyralis", "Ellychnia_sp", "Ellychnia_corrusca", "Photinus_macdermotti_1", "Photinus_granulatus", "Photinus_australis", "Photinus_brimleyi", "Pyropyga_decipiens", "Pyropyga_nigricans")
+
+index = 0
+for ( t in tmp_taxa_Photinini ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Photinini[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Photinini") ) {
+    clade_Photinini = clade(taxa_Photinini)
+}
+
+
+###################
+## Phosphaenini  ##
+###################
+
+tmp_taxa_Phosphaenini = v("Lucidota_atra", "Phosphaenopterus_sp")
+
+index = 0
+for ( t in tmp_taxa_Phosphaenini ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Phosphaenini[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Phosphaenini") ) {
+    clade_Phosphaenini = clade(taxa_Phosphaenini)
+}
+
+
+###################
+## Lampyrinae  ##
+###################
+
+tmp_taxa_Lampyrinae = v("Aspisoma_sp", "Aspisoma_sticticum", "Cratomorphus_sp", "Pyractomena_borealis", "Pyractonema_sp_1", "Pyractonema_sp_2", "Lamprocera_sp_1", "Lamprocera_sp_2", "Lamprocera_sp_3", "Lamprocera_sp_4", "Lucio_blattinum", "Lychnacris_sp", "Tenaspis_angularis", "Diaphanes_pectinealis", "Diaphanes_sp_1", "Diaphanes_sp_2", "Diaphanes_sp_3", "Diaphanes_sp_4", "Lampyris_noctiluca", "Microphotus_sp", "Petalacmis_sp", "Pleotomodes_needhami", "Pyrocoelia_pygidialis", "Photinini_sp_", "Ellychnia_corrusca", "Ellychnia_sp", "Heterophotinus_sp", "Lamprigera_yunnana", "Photinus_sp_1", "Photinus_sp_2", "Photinus_floridanus", "Photinus_macdermotti_2", "Photinus_stellaris", "Photinus_ardens", "Photinus_carolinus", "Photinus_pyralis", "Ellychnia_sp", "Ellychnia_corrusca", "Photinus_macdermotti_1", "Photinus_granulatus", "Photinus_australis", "Photinus_brimleyi", "Pyropyga_decipiens", "Pyropyga_nigricans", "Lucidota_atra", "Phosphaenopterus_sp")
+
+index = 0
+for ( t in tmp_taxa_Lampyrinae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Lampyrinae[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Lampyrinae") ) {
+    clade_Lampyrinae = clade(taxa_Lampyrinae)
+}
+
+
+######################
+## Australoluciola  ##
+######################
+
+tmp_taxa_Australoluciola = v("Australoluciola_nigra", "Australoluciola_sp")
+
+index = 0
+for ( t in tmp_taxa_Australoluciola ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Australoluciola[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Australoluciola") ) {
+    clade_Australoluciola = clade(taxa_Australoluciola)
+}
+
+
+#############
+## Curtos  ##
+#############
+
+tmp_taxa_Curtos = v("Curtos_sp", "Curtos_bilineatus", "Curtos_obsuricolor")
+
+index = 0
+for ( t in tmp_taxa_Curtos ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Curtos[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Curtos") ) {
+    clade_Curtos = clade(taxa_Curtos)
+}
+
+
+##############
+## Luciola  ##
+##############
+
+tmp_taxa_Luciola = v("Luciola_sp_1", "Luciola_sp_2")
+
+index = 0
+for ( t in tmp_taxa_Luciola ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Luciola[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Luciola") ) {
+    clade_Luciola = clade(taxa_Luciola)
+}
+
+
+################
+## Luciolini  ##
+################
+
+tmp_taxa_Luciolini = v("Abscondita_cerata", "Asymmetrica_circumdata", "Atyphella_flammulans", "Australoluciola_sp", "Australoluciola_nigra", "Curtos_sp", "Curtos_bilineatus", "Curtos_obsuricolor", "Emeia_pseudosauteri", "Lloydiella_uberia", "Luciola_sp_1", "Luciola_sp_2", "Pteroptyx_sp", "Pygoluciola_qinqyu", "Trisinuata_sp")
+
+index = 0
+for ( t in tmp_taxa_Luciolini ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Luciolini[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Luciolini") ) {
+    clade_Luciolini = clade(taxa_Luciolini)
+}
+
+#################
+## Luciolinae  ##
+#################
+
+tmp_taxa_Luciolinae = v("Luciolinae_sp", "Luciolinae_nr_Luciola_1", "Luciolinae_nr_Luciola_2", "Luciolinae_nr_Luciola_3", "Luciolinae_nr_Luciola_4", "Abscondita_cerata", "Asymmetrica_circumdata", "Atyphella_flammulans", "Australoluciola_sp", "Australoluciola_nigra", "Curtos_sp", "Curtos_bilineatus", "Curtos_obsuricolor", "Emeia_pseudosauteri", "Lloydiella_uberia", "Luciola_sp_1", "Luciola_sp_2", "Pteroptyx_sp", "Pygoluciola_qinqyu", "Trisinuata_sp")
+
+index = 0
+for ( t in tmp_taxa_Luciolinae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+        taxa_Luciolinae[++index] = t
+    }
+}
+if ( index > 1 && exists("taxa_Luciolinae") ) {
+    clade_Luciolinae = clade(taxa_Luciolinae)
+}
+
+
+##################
+## Ototretinae  ##
+##################
+
+tmp_taxa_Ototretinae = v("Drilaster_sp", "Stenocladius_shirakii")
+
+index = 0
+for ( t in tmp_taxa_Ototretinae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Ototretinae[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Ototretinae") ) {
+    clade_Ototretinae = clade(taxa_Ototretinae)
+}
+
+
+###################
+## Bicellonycha  ##
+###################
+
+tmp_taxa_Bicellonycha = v("Bicellonycha_sp_1", "Bicellonycha_sp_2")
+
+index = 0
+for ( t in tmp_taxa_Bicellonycha ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Bicellonycha[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Bicellonycha") ) {
+    clade_Bicellonycha = clade(taxa_Bicellonycha)
+}
+
+
+###############
+## Photuris  ##
+###############
+
+tmp_taxa_Photuris = v("Photuris_congener", "Photuris_divisia", "Photuris_frontalis", "Photuris_quadrifulgens")
+
+index = 0
+for ( t in tmp_taxa_Photuris ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Photuris[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Photuris") ) {
+    clade_Photuris = clade(taxa_Photuris)
+}
+
+
+#################
+## Photurinae  ##
+#################
+
+tmp_taxa_Photurinae = v("Bicellonycha_sp_1", "Bicellonycha_sp_2", "Photuris_congener", "Photuris_divisia", "Photuris_frontalis", "Photuris_quadrifulgens", "Pyrogaster_sp")
+
+index = 0
+for ( t in tmp_taxa_Photurinae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Photurinae[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Photurinae") ) {
+    clade_Photurinae = clade(taxa_Photurinae)
+}
+
+
+
+#################
+## Lampyridae  ##
+#################
+
+tmp_taxa_Lampyridae = v("Amydetes_fastigiata", "Cladodes_illigeri", "Ethra_axillaris", "Memoan_ciceroi", "Psilocladus_sigillatus", "Psilocladus_sp_1", "Psilocladus_sp_2", "Scissicauda_disjuncta", "Vesta_impressicollis", "Vesta_saturnalis", "Vesta_sp", "Pollaclasis_bifaria", "Lamprohiza_splendidula", "Phausis_reticulata", "Aspisoma_sp", "Aspisoma_sticticum", "Cratomorphus_sp", "Pyractomena_borealis", "Pyractonema_sp_1", "Pyractonema_sp_2", "Lamprocera_sp_1", "Lamprocera_sp_2", "Lamprocera_sp_3", "Lamprocera_sp_4", "Lucio_blattinum", "Lychnacris_sp", "Tenaspis_angularis", "Diaphanes_pectinealis", "Diaphanes_sp_1", "Diaphanes_sp_2", "Diaphanes_sp_3", "Diaphanes_sp_4", "Lampyris_noctiluca", "Microphotus_sp", "Petalacmis_sp", "Pleotomodes_needhami", "Pyrocoelia_pygidialis", "Photinini_sp_", "Ellychnia_corrusca", "Ellychnia_sp", "Heterophotinus_sp", "Lamprigera_yunnana", "Photinus_ardens", "Photinus_australis", "Photinus_brimleyi", "Photinus_carolinus", "Photinus_floridanus", "Photinus_granulatus", "Photinus_macdermotti_1", "Photinus_macdermotti_2", "Photinus_pyralis", "Photinus_sp_1", "Photinus_sp_2", "Photinus_stellaris", "Pyropyga_decipiens", "Pyropyga_nigricans", "Lucidota_atra", "Phosphaenopterus_sp", "Luciolinae_sp", "Luciolinae_nr_Luciola_1", "Luciolinae_nr_Luciola_2", "Luciolinae_nr_Luciola_3", "Luciolinae_nr_Luciola_4", "Abscondita_cerata", "Asymmetrica_circumdata", "Atyphella_flammulans", "Australoluciola_nigra", "Australoluciola_sp", "Curtos_sp", "Curtos_bilineatus", "Curtos_obsuricolor", "Emeia_pseudosauteri", "Lloydiella_uberia", "Luciola_sp_1", "Luciola_sp_2", "Pteroptyx_sp", "Pygoluciola_qinqyu", "Trisinuata_sp", "Drilaster_sp", "Stenocladius_shirakii", "Bicellonycha_sp_1", "Bicellonycha_sp_2", "Photuris_congener", "Photuris_divisia", "Photuris_frontalis", "Photuris_quadrifulgens", "Pyrogaster_sp", "Pterotus_obscuripennis")
+
+index = 0
+for ( t in tmp_taxa_Lampyridae ) {
+    if ( data.percentageMissing(t) < MIN_SEQ_DATA ) {
+	    taxa_Lampyridae[++index] = t
+	}
+}
+if ( index > 1 && exists("taxa_Lampyridae") ) {
+    clade_Lampyridae = clade(taxa_Lampyridae)
+}
+
+
+
+
+PP_FILE              = RESULTS_DIR + "/Lampyridae_unrooted_PP_" + GENE_NAME + ".csv"
+
+
+
+
+for ( rep in 1:N_REPS ) {
+
+    POSTERIOR_TREE_FILE  = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + "_run_" + rep + ".trees"
+
+    treetrace = readTreeTrace(POSTERIOR_TREE_FILE, treetype=TREE_TYPE, thinning=1)
+
+    pp_Psilocladus[rep]       = -1.0
+    pp_Vesta[rep]             = -1.0
+    pp_Amydetinae[rep]        = -1.0
+    pp_Lamprohizinae[rep]     = -1.0
+    pp_Aspisoma[rep]          = -1.0
+    pp_Pyractomena[rep]       = -1.0
+    pp_Cratomorphini[rep]     = -1.0
+    pp_Lamprocera[rep]        = -1.0
+    pp_Lamprocerini[rep]      = -1.0
+    pp_Diaphanes[rep]         = -1.0
+    pp_Lampyrini[rep]         = -1.0
+    pp_Ellychnia[rep]         = -1.0
+    pp_Photinus[rep]          = -1.0
+    pp_Pyropyga[rep]          = -1.0
+    pp_Photinini[rep]         = -1.0
+    pp_Phosphaenini[rep]      = -1.0
+    pp_Lampyrinae[rep]        = -1.0
+    pp_Australoluciola[rep]   = -1.0
+    pp_Curtos[rep]            = -1.0
+    pp_Luciola[rep]           = -1.0
+    pp_Luciolini[rep]         = -1.0
+    pp_Luciolinae[rep]        = -1.0
+    pp_Ototretinae[rep]       = -1.0
+    pp_Bicellonycha[rep]      = -1.0
+    pp_Photuris[rep]          = -1.0
+    pp_Photurinae[rep]        = -1.0
+    pp_Lampyridae[rep]        = -1.0
+
+    if ( exists("clade_Psilocladus") )     pp_Psilocladus[rep]       <- treetrace.cladeProbability( clade_Psilocladus )
+    if ( exists("clade_Vesta") )           pp_Vesta[rep]             <- treetrace.cladeProbability( clade_Vesta )
+    if ( exists("clade_Amydetinae") )      pp_Amydetinae[rep]        <- treetrace.cladeProbability( clade_Amydetinae )
+    if ( exists("clade_Lamprohizinae") )   pp_Lamprohizinae[rep]     <- treetrace.cladeProbability( clade_Lamprohizinae )
+    if ( exists("clade_Aspisoma") )        pp_Aspisoma[rep]          <- treetrace.cladeProbability( clade_Aspisoma )
+    if ( exists("clade_Pyractomena") )     pp_Pyractomena[rep]       <- treetrace.cladeProbability( clade_Pyractomena )
+    if ( exists("clade_Cratomorphini") )   pp_Cratomorphini[rep]     <- treetrace.cladeProbability( clade_Cratomorphini )
+    if ( exists("clade_Lamprocera") )      pp_Lamprocera[rep]        <- treetrace.cladeProbability( clade_Lamprocera )
+    if ( exists("clade_Lamprocerini") )    pp_Lamprocerini[rep]      <- treetrace.cladeProbability( clade_Lamprocerini )
+    if ( exists("clade_Diaphanes") )       pp_Diaphanes[rep]         <- treetrace.cladeProbability( clade_Diaphanes )
+    if ( exists("clade_Lampyrini") )       pp_Lampyrini[rep]         <- treetrace.cladeProbability( clade_Lampyrini )
+    if ( exists("clade_Ellychnia") )       pp_Ellychnia[rep]         <- treetrace.cladeProbability( clade_Ellychnia )
+    if ( exists("clade_Photinus") )        pp_Photinus[rep]          <- treetrace.cladeProbability( clade_Photinus )
+    if ( exists("clade_Pyropyga") )        pp_Pyropyga[rep]          <- treetrace.cladeProbability( clade_Pyropyga )
+    if ( exists("clade_Photinini") )       pp_Photinini[rep]         <- treetrace.cladeProbability( clade_Photinini )
+    if ( exists("clade_Phosphaenini") )    pp_Phosphaenini[rep]      <- treetrace.cladeProbability( clade_Phosphaenini )
+    if ( exists("clade_Lampyrinae") )      pp_Lampyrinae[rep]        <- treetrace.cladeProbability( clade_Lampyrinae )
+    if ( exists("clade_Australoluciola") ) pp_Australoluciola[rep]   <- treetrace.cladeProbability( clade_Australoluciola )
+    if ( exists("clade_Curtos") )          pp_Curtos[rep]            <- treetrace.cladeProbability( clade_Curtos )
+    if ( exists("clade_Luciola") )         pp_Luciola[rep]           <- treetrace.cladeProbability( clade_Luciola )
+    if ( exists("clade_Luciolini") )       pp_Luciolini[rep]         <- treetrace.cladeProbability( clade_Luciolini )
+    if ( exists("clade_Luciolinae") )      pp_Luciolinae[rep]        <- treetrace.cladeProbability( clade_Luciolinae )
+    if ( exists("clade_Ototretinae") )     pp_Ototretinae[rep]       <- treetrace.cladeProbability( clade_Ototretinae )
+    if ( exists("clade_Bicellonycha") )    pp_Bicellonycha[rep]      <- treetrace.cladeProbability( clade_Bicellonycha )
+    if ( exists("clade_Photuris") )        pp_Photuris[rep]          <- treetrace.cladeProbability( clade_Photuris )
+    if ( exists("clade_Photurinae") )      pp_Photurinae[rep]        <- treetrace.cladeProbability( clade_Photurinae )
+    if ( exists("clade_Lampyridae") )      pp_Lampyridae[rep]        <- treetrace.cladeProbability( clade_Lampyridae )
+
+}
+
+
+
+write("Rep1",sep="",file=PP_FILE, append=FALSE )
+for (rep in 2:N_REPS) write(",Rep",rep,sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Psilocladus[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Psilocladus[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Vesta[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Vesta[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Amydetinae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Amydetinae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Lamprohizinae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Lamprohizinae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Aspisoma[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Aspisoma[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Pyractomena[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Pyractomena[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Cratomorphini[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Cratomorphini[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Lamprocera[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Lamprocera[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Lamprocerini[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Lamprocerini[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Diaphanes[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Diaphanes[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Lampyrini[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Lampyrini[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Ellychnia[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Ellychnia[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Photinus[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Photinus[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Pyropyga[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Pyropyga[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Photinini[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Photinini[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Phosphaenini[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Phosphaenini[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Lampyrinae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Lampyrinae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Australoluciola[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Australoluciola[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Curtos[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Curtos[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Luciola[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Luciola[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Luciolini[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Luciolini[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Luciolinae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Luciolinae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Ototretinae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Ototretinae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Bicellonycha[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Bicellonycha[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Photuris[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Photuris[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Photurinae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Photurinae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )
+
+write(pp_Lampyridae[1],sep="",file=PP_FILE, append=TRUE )
+for (rep in 2:N_REPS) write(",",pp_Lampyridae[rep],sep="",file=PP_FILE, append=TRUE )
+write("\n",sep="",file=PP_FILE, append=TRUE )

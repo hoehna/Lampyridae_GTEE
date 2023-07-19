@@ -1,0 +1,39 @@
+################################################################################
+#
+# RevBayes Example: Bayesian inference of phylogeny using a GTR+Gamma+Inv
+#			substitution model and UCLN clock model
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+TREE_TYPE     = "clock"
+
+POSTERIOR_TREE_FILE  = OUTPUT_DIR + "/Lampyridae_rooted_" + FOSSILS + "_run_" + REP + ".trees"
+POSTERIOR_MODEL_FILE = OUTPUT_DIR + "/Lampyridae_rooted_" + FOSSILS + "_run_" + REP + ".log"
+MAP_TREE_FILE        = OUTPUT_DIR + "/Lampyridae_rooted_" + FOSSILS + "_run_" + REP + "_MAP.tre"
+
+moves    = VectorMoves()
+monitors = VectorMonitors()
+
+source("scripts/read_data_concatenated_" + DATA_FILTER + ".Rev")
+source("scripts/subst_model_partitioned.Rev")
+source("scripts/partition_rate_model.Rev")
+source("scripts/tree_model_fossilized_birth_death.Rev")
+source("scripts/expand_fossil_data_partitioned.Rev")
+
+source("scripts/clock_model_UCLN.Rev")
+avmvn_rates = mvAVMVN(weight=10)
+avmvn_rates.addVariable(clock_mean)
+for ( i in 1:(2*n_species-2)) {
+    avmvn_rates.addVariable(branch_rates[i])
+}
+moves.append( avmvn_rates )
+
+
+source("scripts/phylo_CTMC_clock_partitioned.Rev")
+source("scripts/mcmc.Rev")
+
+
+# you may want to quit RevBayes now
+q()

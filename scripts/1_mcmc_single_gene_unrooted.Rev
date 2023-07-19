@@ -1,0 +1,29 @@
+################################################################################
+#
+# RevBayes script: Bayesian inference of phylogeny using a GTR+Gamma
+#			substitution model for single loci
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+TREE_TYPE     = "non-clock"
+
+POSTERIOR_TREE_FILE        = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + ".trees"
+POSTERIOR_MODEL_FILE       = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + ".log"
+MAP_TREE_FILE              = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + "_MAP.tre"
+STOCHASTIC_VARIABLE_FILE   = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + ".var"
+PPS_DIR                    = OUTPUT_DIR + "_PPS/" + GENE_NAME
+CHECKPOINT_FILE            = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + ".state"
+
+moves    = VectorMoves()
+monitors = VectorMonitors()
+
+source("scripts/read_data_single.Rev")
+source("scripts/subst_model_single.Rev")
+source("scripts/tree_model_unrooted.Rev")
+source("scripts/phylo_CTMC.Rev")
+source("scripts/mcmc.Rev")
+
+# you may want to quit RevBayes now
+q()

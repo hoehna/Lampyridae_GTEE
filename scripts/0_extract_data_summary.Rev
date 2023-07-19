@@ -1,0 +1,73 @@
+################################################################################
+#
+# RevBayes Script: Extracting summary statistics from the empirical data
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+OUTPUT_DIR = "data_AHE"
+OUTPUT_FILENAME = OUTPUT_DIR + "/data_summary.csv"
+
+#######################
+# Reading in the Data #
+#######################
+
+# read in the taxa
+source( TAXON_FILE )
+taxa.sort()
+
+
+# read in the character data
+index = 1
+for ( i in 1:436 ) {
+
+    f = DATA_DIR + "/Lampyridae_" + i + ".nex"
+
+    # we need to make sure that all taxa are included in this alignment
+    tmp_data <- readDiscreteCharacterData( f )
+    tmp_taxa <- tmp_data.taxa()
+    for ( t in tmp_taxa ) {
+        n = t.getSpeciesName()
+        miss <- tmp_data.percentageMissing( n )
+        if ( miss > 0.25 ) {
+          tmp_data.removeTaxa( n )
+        }
+    }
+    data = tmp_data
+
+    # for the first alignment, write a header for our csv file
+    if ( i == 1 ) {
+        write("locus",
+          ",", "multinomialProfileLikelihood",
+          ",", "numInvSites",
+          ",", "numVarSites",
+          ",", "maxGc",
+          ",", "maxPD",
+          ",", "meanGc",
+          ",", "minGc",
+          ",", "minPD",
+          ",", "varGc",
+          "\n",append=FALSE,file=OUTPUT_FILENAME,sep="")
+
+    }
+
+    # get the locus name
+    while ( f.indexOf("/") > 0 ) f = f.substr(f.indexOf("/")+1,f.size())
+    f = f.substr(1,f.size()-4)
+
+    write(f,append=TRUE,file=OUTPUT_FILENAME,sep="")
+
+    write(
+      ",", data.computeMultinomialProfileLikelihood(),
+      ",", data.getNumInvariantSites(excludeAmbiguous=FALSE),
+      ",", data.nchar() - data.getNumInvariantSites(excludeAmbiguous=FALSE),
+      ",", data.maxGcContent(excludeAmbiguous=FALSE),
+      ",", data.maxPairwiseDifference(excludeAmbiguous=FALSE),
+      ",", data.meanGcContent(excludeAmbiguous=FALSE),
+      ",", data.minGcContent(excludeAmbiguous=FALSE),
+      ",", data.minPairwiseDifference(excludeAmbiguous=FALSE),
+      ",", data.varGcContent(excludeAmbiguous=FALSE),
+      "\n",append=TRUE,file=OUTPUT_FILENAME,sep="")
+
+}

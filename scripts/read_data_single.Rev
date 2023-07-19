@@ -1,0 +1,29 @@
+################################################################################
+#
+# RevBayes Script: Reading in a single gene
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+#######################
+# Reading in the Data #
+#######################
+
+# read in the character data
+tmp_data <- readDiscreteCharacterData( DATA_DIR + "/" + GENE_NAME + ".nex" )
+tmp_taxa <- tmp_data.taxa()
+for ( t in tmp_taxa ) {
+  n = t.getSpeciesName()
+  miss <- tmp_data.percentageMissing( n )
+  if ( miss > 0.25 ) {
+    tmp_data.removeTaxa( n )
+  }
+}
+data = tmp_data
+
+# Get some useful variables from the data. We need these later on.
+n_species <- data.ntaxa()
+num_branches <- 2 * n_species - 3
+taxa = data.taxa()

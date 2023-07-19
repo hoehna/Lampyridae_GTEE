@@ -1,0 +1,96 @@
+################################################################################
+#
+# RevBayes Script: Birth-death tree prior
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+
+taxa = readTaxonData("data/lampyridae_"+FOSSILS+"_no_outgroup.tsv")
+
+n_species = taxa.size()
+
+##############
+# Tree model #
+##############
+
+### the BDP is conditioned on the root time
+### here we use an uninformative prior on the root age
+### this prior is a uniform distribution
+origin_time ~ dnUniform(0.0,5000.0)
+origin_time.setValue( 150.0 )
+moves.append( mvSlide(origin_time, weight=2.0) )
+
+
+### the birth rate is a stochastic random variable drawn from a uniform prior
+### MCMC samples this variable using a scale proposal
+birth_rate ~ dnUniform(0,1E6)
+death_rate ~ dnUniform(0,1E6)
+fossil_rate ~ dnUniform(0,1E6)
+
+birth_rate.setValue( ln(n_species/2.0) / origin_time )
+death_rate.setValue( birth_rate / 1E4 )
+fossil_rate.setValue( death_rate )
+
+
+moves.append( mvScale(birth_rate,lambda=1.0,tune=true,weight=3.0) )
+moves.append( mvScale(death_rate,lambda=1.0,tune=true,weight=3.0) )
+moves.append( mvScale(fossil_rate,lambda=1.0,tune=true,weight=3.0) )
+
+
+### rho is the probability of sampling species at the present
+rho <- 1.0
+
+### the time tree is a stochastic node modeled by the constant rate birth-death process (dnBDP)
+# Define the tree-prior distribution as the birth-death process #
+tree_dist = dnFBDP(lambda=birth_rate, mu=death_rate, psi=fossil_rate, rho=rho, origin=origin_time, taxa=taxa)
+
+# Define clade constraints #
+source("scripts/clades_"+FOSSILS+".Rev")
+
+STARTING_TREE_FILENAME = DATA_DIR + "/Lampyridae_rooted_"+FOSSILS+"_no_outgroup.tre"
+starting_tree = readTrees( STARTING_TREE_FILENAME )[1]
+
+# Define a stochastic node for the constrained tree topology #
+phylogeny ~ dnConstrainedTopology(tree_dist, constraints=constraints, initialTree=starting_tree)
+
+
+# Specify moves on the tree and node times #
+moves.append( mvNarrow(phylogeny, weight=n_species) )
+moves.append( mvFNPR(phylogeny, weight=n_species) )
+moves.append( mvCollapseExpandFossilBranch(phylogeny, origin_time, weight=6.0) )
+
+moves.append( mvNodeTimeSlideUniform(phylogeny, weight=n_species) )
+moves.append( mvRootTimeSlideUniform(phylogeny, origin_time, weight=5.0) )
+
+
+
+fossils = phylogeny.getFossils()
+for(i in 1:fossils.size()) {
+  t[i] := tmrca(phylogeny, clade(fossils[i]))
+
+  a[i] <- 0
+  b[i] <- 0
+  for ( this_taxon in taxa ) {
+
+    if ( this_taxon.getSpeciesName() == fossils[i].getSpeciesName() ) {
+      a[i] <- this_taxon.getMinAge()
+      b[i] <- this_taxon.getMaxAge()
+    }
+
+  }
+
+#  F[i] ~ dnUniform(t[i] - b[i], t[i] - a[i])
+  F[i] ~ dnSoftBoundUniformNormal(min=t[i] - b[i], max=t[i] - a[i], sd=2.0, p=0.01)
+  F[i].clamp( 0 )
+#  moves.append( mvFossilTipTimeUniform(phylogeny, origin_time, min=a[i], max=b[i], tip=fossils[i].getSpeciesName(), weight=2) )
+#  moves.append( mvFossilTipTimeSlideUniform(phylogeny, origin_time, min=a[i], max=b[i], tip=fossils[i].getSpeciesName(), tune=true, weight=3) )
+}
+
+
+
+# Monitor the number of sampled ancestors in the FBD-tree #
+num_samp_anc := phylogeny.numSampledAncestors()

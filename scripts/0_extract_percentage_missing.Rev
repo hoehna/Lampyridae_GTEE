@@ -1,0 +1,49 @@
+################################################################################
+#
+# RevBayes Script: Computing the percentage of missing data per locus
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+DATA_DIR = "data_AHE"
+OUTPUT_FILENAME = DATA_DIR + ".csv"
+
+#######################
+# Reading in the Data #
+#######################
+
+for (i in 1:436) files[i] = DATA_DIR + "/Lampyridae_" + i + ".nex"
+
+# read in the character data
+index = 1
+for ( i in 1:files.size() ) {
+
+    data = readDiscreteCharacterData( files[i] )
+    taxa = data.taxa()
+    taxa.sort()
+
+    if ( i == 1 ) {
+        write("UCE",append=FALSE,file=OUTPUT_FILENAME,sep="")
+        for ( j in 1:taxa.size() ) {
+            name = taxa[j].getSpeciesName()
+            write(",",name,append=TRUE,file=OUTPUT_FILENAME,sep="")
+        }
+        write("\n",append=TRUE,file=OUTPUT_FILENAME,sep="")
+
+    }
+
+    f = files[i]
+    while ( f.indexOf("/") > 0 ) f = f.substr(f.indexOf("/")+1,f.size())
+    f = f.substr(1,f.size()-4)
+
+    write(f,append=TRUE,file=OUTPUT_FILENAME,sep="")
+
+    for ( j in 1:taxa.size() ) {
+        name = taxa[j].getSpeciesName()
+        p = data.percentageMissing(name)
+        write(",",p,append=TRUE,file=OUTPUT_FILENAME,sep="")
+    }
+    write("\n",append=TRUE,file=OUTPUT_FILENAME,sep="")
+
+}

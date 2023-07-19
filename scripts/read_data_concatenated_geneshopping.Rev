@@ -1,0 +1,19 @@
+################################################################################
+#
+# RevBayes Script: Reading in all genes for the gene shopping subset
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+geneshopping_uce <- v(190, 128, 70, 34, 246, 275, 5, 216, 350, 15, 137, 402, 260, 390, 164, 382, 121, 354, 204, 247, 421, 123, 318, 291, 237, 202, 46, 314, 65, 411)
+
+#######################
+# Reading in the Data #
+#######################
+
+# read in the character data
+index = 1
+for ( i in geneshopping_uce) {
+   data[index++] = readDiscreteCharacterData( "data_AHE/Lampyridae_"+i+".nex" )
+}

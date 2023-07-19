@@ -1,0 +1,39 @@
+################################################################################
+#
+# RevBayes Script: GTR+Gamma+Inv substitution model as a single partition
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+##################################
+#      Substitution Model        #
+##################################
+
+# exchangeability rates
+er_prior <- v(1,1,1,1,1,1)
+er ~ dnDirichlet(er_prior)
+moves.append( mvSimplexElementScale(er, alpha=10, tune=true, weight=3) )
+
+# stationary frequencies
+pi_prior <- v(1,1,1,1)
+pi ~ dnDirichlet(pi_prior)
+moves.append( mvSimplexElementScale(pi, alpha=10, tune=true, weight=2) )
+
+# rate matrix for partition i
+Q := fnGTR(er,pi)
+
+# +Gamma for partition i
+alpha ~ dnUniform( 0, 1E8 )
+alpha.setValue( 1.0 )
+gamma_rates := fnDiscretizeGamma( alpha, alpha, 4, false )
+
+# add moves for the alpha parameter
+moves.append( mvScale(alpha,weight=2) )
+
+# the probability of a site being invariable
+#pinvar ~ dnBeta(1,1)
+#moves.append( mvScale(pinvar, lambda=0.1, tune=true, weight=2.0) )
+#moves.append( mvSlide(pinvar, delta=0.1, tune=true, weight=2.0) )

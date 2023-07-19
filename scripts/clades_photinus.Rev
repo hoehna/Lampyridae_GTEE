@@ -1,0 +1,15 @@
+################################################################################
+#
+# RevBayes Script: Specifying the lampyridae clade
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+clade_Lampyris = clade("Lampyris_orciluca", "Lampyris_noctiluca")
+clade_Lamprohiza = clade("Lamprohiza_fossilis", "Lamprohiza_splendidula")
+clade_Lucidota = clade("Lucidota_prima", "Lucidota_atra")
+clade_Photinus = clade("Photinus_kazantsevi", "Photinus_sp_1", "Photinus_sp_2", "Photinus_floridanus", "Photinus_macdermotti_2", "Photinus_stellaris", "Photinus_ardens", "Photinus_carolinus", "Photinus_pyralis", "Ellychnia_sp", "Ellychnia_corrusca", "Photinus_macdermotti_1", "Photinus_granulatus", "Photinus_australis", "Photinus_brimleyi")
+
+constraints = [clade_Lampyris, clade_Lamprohiza, clade_Lucidota, clade_Photinus]

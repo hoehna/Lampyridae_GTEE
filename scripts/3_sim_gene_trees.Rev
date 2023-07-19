@@ -1,0 +1,37 @@
+################################################################################
+#
+# RevBayes Script: Simulating gene trees under the multispecies coalescent
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+#TRUE_POP_SIZE <- 1E6
+NUM_GENES <- 436
+#SIM_DIR <- "4_simulation_study_gene_trees/sim_trees"
+
+seed( SEED )
+
+# Read in species tree
+species_tree = readTrees("data/Lampyridae_with_outgroups.tre")[1]
+taxa <- species_tree.taxa()
+NUM_TAXA <- species_tree.ntips()
+num_branches_rooted <- 2 * NUM_TAXA - 1
+
+
+for (i in 1:num_branches_rooted) {
+    Ne[i] <- TRUE_POP_SIZE * 1E-6
+}
+
+# Simulate gene trees
+for (i in 1:NUM_GENES) {
+    "Simulating gene " + i + "..."
+
+    gene_trees_sim[i] ~ dnMultiSpeciesCoalescent(speciesTree=species_tree, Ne=Ne, taxa=taxa)
+    write(gene_trees_sim[i], filename=SIM_DIR + "/Lampyridae_" + i + ".tree")
+
+}
+
+
+# you may want to quit RevBayes now
+q()

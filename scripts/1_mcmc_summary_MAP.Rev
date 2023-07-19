@@ -1,0 +1,20 @@
+################################################################################
+#
+# RevBayes Script: Summarizing the MCMC
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+TREE_TYPE     = "non-clock"
+
+POSTERIOR_TREE_FILE  = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + ".trees"
+MAP_TREE_FILE        = OUTPUT_DIR + "/Lampyridae_unrooted_" + GENE_NAME + "_MAP.tre"
+TL_FILE              = RESULTS_DIR + "/Lampyridae_unrooted_" + GENE_NAME + ".csv"
+
+
+# summarize output
+treetrace = readTreeTrace(POSTERIOR_TREE_FILE, treetype=TREE_TYPE, thinning=10)
+#treetrace.summarize()
+
+map_tree = mapTree(treetrace,MAP_TREE_FILE)

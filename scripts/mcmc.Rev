@@ -1,0 +1,44 @@
+################################################################################
+#
+# RevBayes Script: Running the MCMC and posterior predictive simulation
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+############
+# Analysis #
+############
+
+mymodel = model(phylogeny)
+
+# add monitors
+monitors.append( mnModel(filename=POSTERIOR_MODEL_FILE,printgen=1) )
+monitors.append( mnFile(phylogeny, filename=POSTERIOR_TREE_FILE, printgen=1) )
+if ( exists( "STOCHASTIC_VARIABLE_FILE" ) ) {
+    monitors.append( mnStochasticVariable(filename=STOCHASTIC_VARIABLE_FILE, printgen=10) )
+}
+monitors.append( mnScreen(printgen=1) )
+
+# run the analysis
+if ( N_CHAINS > 1 ) {
+    mymcmc = mcmcmc(mymodel, moves, monitors, nruns=N_REPS, nchain=N_CHAINS, swapInterval=1, swapMethod="both", moveschedule="random", combine="mixed")
+} else {
+    mymcmc = mcmc(mymodel, moves, monitors, nruns=N_REPS, moveschedule="random", combine="mixed")
+}
+mymcmc.burnin(NUM_MCMC_ITER/10.0,tuningInterval=100)
+mymcmc.run(NUM_MCMC_ITER,tuningInterval=100, checkpointInterval=1000, checkpointFile=CHECKPOINT_FILE)
+
+if ( exists( "STOCHASTIC_VARIABLE_FILE" ) ) {
+    # "Reading Trace"
+    trace = readStochasticVariableTrace(STOCHASTIC_VARIABLE_FILE, delimiter=TAB, burnin=0.5)
+
+    pps_thinning = round( trace[1].size() / 1000.0 )
+
+    # "Creating Posterior Predictive Simulation"
+    pps = posteriorPredictiveSimulation(mymodel, directory = PPS_DIR, trace)
+
+    # "Running the posterior predictive simulation"
+    pps.run(thinning=pps_thinning)
+}

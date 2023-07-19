@@ -1,0 +1,20 @@
+################################################################################
+#
+# RevBayes Script: Reading in all genes with high PP
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+high_PP_uce <- v(18, 37, 54, 57, 70, 145, 175, 190, 192, 203, 265, 298, 314, 319, 390)
+
+#######################
+# Reading in the Data #
+#######################
+
+# read in the character data
+index = 1
+for ( i in high_PP_uce) {
+
+    data[index++] = readDiscreteCharacterData( "data_AHE/Lampyridae_"+i+".nex" )
+}

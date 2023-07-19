@@ -1,0 +1,20 @@
+################################################################################
+#
+# RevBayes Script: Reading in all genes with high coverage
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+high_coverage_uce <- v(5, 8, 12, 18, 35, 62, 70, 101, 106, 113, 150, 175, 180, 190, 202, 212, 216, 246, 247, 248, 259, 265, 279, 285, 288, 302, 318, 319, 322, 341, 350, 381, 390, 402, 411, 418, 421)
+
+#######################
+# Reading in the Data #
+#######################
+
+# read in the character data
+index = 1
+for ( i in high_coverage_uce) {
+
+    data[index++] = readDiscreteCharacterData( "data_AHE/Lampyridae_"+i+".nex" )
+}

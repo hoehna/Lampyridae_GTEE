@@ -1,0 +1,16 @@
+################################################################################
+#
+# RevBayes Script: Specify the Phylo-CTMC
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+###################
+# PhyloCTMC Model #
+###################
+
+phyloSeq ~ dnPhyloCTMC(tree=phylogeny, Q=Q, siteRates=gamma_rates, type="DNA")
+phyloSeq.clamp( data )

@@ -1,0 +1,20 @@
+################################################################################
+#
+# RevBayes Script: Reading in all genes with low GC variance
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+low_GC_var_uce <- v(5, 37, 50, 86, 90, 106, 112, 150, 171, 190, 202, 208, 212, 225, 237, 259, 265, 278, 285, 298, 302, 309, 314, 319, 350, 365, 379, 390, 398, 399)
+
+
+#######################
+# Reading in the Data #
+#######################
+
+# read in the character data
+index = 1
+for ( i in low_GC_var_uce) {
+    data[index++] = readDiscreteCharacterData( "data_AHE/Lampyridae_"+i+".nex" )
+}

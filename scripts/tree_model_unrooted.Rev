@@ -1,0 +1,28 @@
+################################################################################
+#
+# RevBayes Script: Unrooted tree prior
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+##############
+# Tree model #
+##############
+
+# Define the tree parameter.
+# We assume a uniform prior on topology.
+# We assume an exponential(10) prior on
+# the branch lengths.
+phylogeny ~ dnUniformTopologyBranchLength(taxa, dnExponential(10.0) )
+
+
+moves.append( mvNNI(phylogeny, weight=taxa.size() * 2.0) )
+moves.append( mvSPR(phylogeny, weight=taxa.size() / 5.0) )
+moves.append( mvSubtreeSwap(phylogeny, weight=taxa.size() / 5.0) )
+moves.append( mvGibbsSubtreeSwap(phylogeny, weight=taxa.size() / 50.0) )
+moves.append( mvGibbsSubtreePruneAndRegraft(phylogeny, weight=taxa.size() / 25.0) )
+
+moves.append( mvBranchLengthScale(phylogeny, weight=2.0*taxa.size()) )

@@ -1,0 +1,24 @@
+################################################################################
+#
+# RevBayes Script: Specify the partition rate model
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+H = 0.587405
+
+########################
+# Partition Rate Model #
+########################
+
+rel_part_rate[1] <- 1
+
+for ( i in 2:n_data_subsets ) {
+
+    rel_part_rate[i] ~ dnLognormal(0,H)
+    rel_part_rate[i].setValue(1.0)
+    moves.append( mvScale(rel_part_rate[i],lambda=0.001,weight=2.0) )
+
+}

@@ -1,0 +1,46 @@
+################################################################################
+#
+# RevBayes Script: GTR+Gamma+Inv substitution model as a single partition
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+n_data_subsets = data.size()
+
+##################################
+#      Substitution Model        #
+##################################
+
+for ( i in 1:n_data_subsets ) {
+
+    # exchangeability rates
+    er_prior[i] <- v(1,1,1,1,1,1)
+    er[i] ~ dnDirichlet(er_prior[i])
+    moves.append( mvSimplexElementScale(er[i], alpha=10, tune=true, weight=3) )
+
+    # stationary frequencies
+    pi_prior[i] <- v(1,1,1,1)
+    pi[i] ~ dnDirichlet(pi_prior[i])
+    pi[i].setValue( data[i].getEmpiricalBaseFrequencies() )
+    moves.append( mvSimplexElementScale(pi[i], alpha=10, tune=true, weight=2) )
+
+    # rate matrix for partition i
+    Q[i] := fnGTR(er[i],pi[i])
+
+    # +Gamma for partition i
+    alpha[i] ~ dnUniform( 0, 1E8 )
+    alpha[i].setValue( 0.2 )
+    gamma_rates[i] := fnDiscretizeGamma( alpha[i], alpha[i], 4, false )
+
+    # add moves for the alpha parameter
+    moves.append( mvScale(alpha[i],weight=1) )
+
+    # the probability of a site being invariable
+#    pinvar[i] ~ dnBeta(1,1)
+#    moves.append( mvScale(pinvar[i], lambda=0.1, tune=true, weight=0.5) )
+#    moves.append( mvSlide(pinvar[i], delta=0.1, tune=true, weight=0.5) )
+#    moves.append( mvBetaProbability(pinvar[i], tune=true, weight=0.5) )
+
+}

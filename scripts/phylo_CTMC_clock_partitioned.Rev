@@ -1,0 +1,20 @@
+################################################################################
+#
+# RevBayes Script: Specify the Phylo-CTMC
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+###################
+# PhyloCTMC Model #
+###################
+
+for ( i in 1:n_data_subsets ) {
+
+    partition_branch_rates[i] := rel_part_rate[i] * branch_rates
+    phyloSeq[i] ~ dnPhyloCTMC(tree=phylogeny, Q=Q[i], siteRates=gamma_rates[i], branchRates=partition_branch_rates[i], type="DNA")
+    phyloSeq[i].clamp( data[i] )
+}

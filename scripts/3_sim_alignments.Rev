@@ -1,0 +1,95 @@
+################################################################################
+#
+# RevBayes Script: Simulating alignments for gene trees
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+#TRUE_POP_SIZE <- 1E6
+#NUM_GENES <- 436
+#SIM_DIR <- "4_simulation_study_gene_trees/sim_trees"
+# <- "4_simulation_study_gene_trees/sim_trees"
+#SIM_DIR <- "4_simulation_study_gene_trees/sim_alignments"
+
+seed( SEED )
+
+#RATE_VAR = "UCE"
+
+ln_clock_mean <- -6.3
+clock_sd      <- 0.58
+
+# Simulate gene trees
+for (i in 1:NUM_GENES) {
+    "Simulating gene " + i + "..."
+
+    # Read in species tree
+    emp_seq = readDiscreteCharacterData("data_AHE/Lampyridae_" + i + ".nex")
+    num_sites = emp_seq.nchar()
+
+    # Read in species tree
+    gene_tree = readTrees(GENE_TREE_DIR + "/Lampyridae_" + i + ".tree")[1]
+    taxa <- gene_tree.taxa()
+    NUM_TAXA <- gene_tree.ntips()
+    num_branches_rooted <- 2 * NUM_TAXA - 2
+
+    for (j in 1:num_branches_rooted) {
+        branch_rates[j] ~ dnLognormal( ln_clock_mean, clock_sd )
+    }
+
+    # exchangeability rates
+    er <- simplex( 0.087, 0.295, 0.08, 0.09, 0.38, 0.068 )
+
+    # stationary frequencies
+    pi <- simplex( 0.31, 0.17, 0.19, 0.33)
+
+    # rate matrix for partition i
+    Q := fnGTR(er,pi)
+
+    # +Gamma for partition i
+    alpha <-  0.53
+    gamma_rates := fnDiscretizeGamma( alpha, alpha, 4, false )
+
+    pinvar <- 0.0
+
+    if ( RATE_VAR == "UCE" ) {
+
+        alpha <-  0.53
+        UCE_rates_cats := fnDiscretizeGamma( alpha, alpha, 4, false )
+
+        UCE_RATES <- append( rev(UCE_rates_cats), UCE_rates_cats )
+        NUM_RATES <- UCE_RATES.size()
+        for ( k in 1:NUM_RATES ) {
+            THIS_NUM_SITES = round(k*num_sites/NUM_RATES) - round((k-1)*num_sites/NUM_RATES)
+            THIS_RATE <- UCE_RATES[k]
+            part_seq[k] ~ dnPhyloCTMC(tree=gene_tree, Q=Q, branchRates=branch_rates*THIS_RATE, pInv=pinvar, type="DNA", nSites=THIS_NUM_SITES)
+        }
+        seq <- concatenate(part_seq)
+    } else {
+        seq ~ dnPhyloCTMC(tree=gene_tree, Q=Q, branchRates=branch_rates, siteRates=gamma_rates, pInv=pinvar, type="DNA", nSites=num_sites)
+    }
+
+    writeNexus(seq, filename=SIM_DIR + "_complete" + "/Lampyridae_" + i + ".nex")
+
+    perc_miss = 0
+    for ( j in 1:NUM_TAXA ) {
+        name = taxa[j].getSpeciesName()
+        perc_miss += emp_seq.percentageMissing(name)
+    }
+    avg_perc_missing = perc_miss / NUM_TAXA
+
+    rand_missing_seq = seq
+    rand_missing_seq.removeRandomSites( avg_perc_missing )
+
+    writeNexus(rand_missing_seq, filename=SIM_DIR + "_random" + "/Lampyridae_" + i + ".nex")
+
+    seq.applyMissingSitesMask( emp_seq )
+
+    writeNexus(seq, filename=SIM_DIR + "_missing" + "/Lampyridae_" + i + ".nex")
+
+
+}
+
+
+# you may want to quit RevBayes now
+q()

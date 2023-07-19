@@ -1,0 +1,33 @@
+################################################################################
+#
+# RevBayes Script: Specify the UCLN relaxed clock model
+#
+#
+# authors: Sebastian Hoehna
+#
+################################################################################
+
+
+###############
+# Clock Model #
+###############
+
+clock_mean ~ dnUniform(1E-12,2)
+clock_sd ~ dnUniform(0,100)
+
+clock_mean.setValue( exp( -6.73 ) )
+clock_sd.setValue( 0.01 )
+
+moves.append( mvSlide(clock_mean, delta=0.01, weight=3.0) )
+moves.append( mvScale(clock_mean, lambda=0.01, weight=3.0) )
+moves.append( mvScale(clock_sd, weight=3.0) )
+
+for ( i in 1:(2*n_species-2)) {
+
+    branch_rates[i] ~ dnLognormal( ln(clock_mean), clock_sd )
+    moves.append( mvScale(branch_rates[i], weight=1.0) )
+
+}
+
+moves.append( mvVectorScale(branch_rates, lambda=0.5, tune=true, weight=4.0) )
+moves.append( mvRateAgeBetaShift(tree=phylogeny, rates=branch_rates, tune=true, weight=n_species) )
