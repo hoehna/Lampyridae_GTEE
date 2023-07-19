@@ -1,4 +1,4 @@
-# Lampyridae_GTEE
+# Gene Tree Estimation error in Lampyridae
 
 This repository contains code to perform the analysis from the study: Höhna et al., Robustness of Divergence Time Estimation Despite Gene Tree Error: A Case Study of Fireflies (Coleoptera: Lampyridae).
 
